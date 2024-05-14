@@ -1,20 +1,22 @@
 # Invoice Management Microservice
 This microservice provides a simple RESTful API for managing a list of invoices. It allows users to perform CRUD (Create, Read, Update, Delete) operations on invoices and implements error handling and unit tests for the service layer.
 
+## Swagger
+After starting the application locally, here you can reach out to the swagger: http://localhost:8080/swagger-ui/index.html
+
 ## Requirements
-Java 8 or higher
-Docker
-PostgreSQL
+- Java 8 or higher
+- Docker
+- PostgreSQL
 ## Technologies Used
-Spring Boot
-PostgreSQL Database
-Docker
+- Spring Boot
+- PostgreSQL Database
+- Docker
 ## Setup Instructions
 Clone the Repository:
 
 ```bash
-git clone <repository_url>
-cd invoice-management-microservice
+git clone https://github.com/CodeLikeAlexito/invoice-taulia.git
 ```
 ### Start the Database:
 Start the PostgreSQL database using Docker Compose:
@@ -26,8 +28,7 @@ docker-compose up -d postgres
 Navigate to the root directory of the project and run the Spring Boot application:
 
 ```
-bash
-./mvnw spring-boot:run
+./gradlew bootRun
 ```
 
 ## REST Endpoints
@@ -39,27 +40,17 @@ POST /invoices
 
 ```json
 {
-"invoiceNumber": "INV-001",
-"buyer": {
-  "name": "Buyer Company"
-},
-"supplier": {
-  "name": "Supplier Inc."
-},
-"items": [
-  {
-    "name": "Item 1",
-    "quantity": 2,
-    "amount": 100
-  },
-  {
-    "name": "Item 2",
-    "quantity": 1,
-    "amount": 50
-  }
-],
-"invoiceDate": "2024-05-15",
-"dueDate": "2024-06-15"
+  "invoiceNumber": "25",
+  "buyerId": "9ad76928-a991-4f9d-b208-de70dc3dcc5b",
+  "supplierId": "b460755d-2863-44b7-9948-e4f5fe6c2415",
+  "dueDate": "2023-05-10",
+  "items": [
+    {
+      "description": "fsafa",
+      "quantity": 1,
+      "price": 125.2
+    }
+  ]
 }
 ```
 ### Retrieve a Single Invoice by ID
@@ -74,8 +65,6 @@ GET /invoices
 ```
 PATCH /invoices/{id}
 ```
-json
-Copy code
 ```json
 [
   { "op": "replace", "path": "/invoiceNumber", "value": "24515125" }

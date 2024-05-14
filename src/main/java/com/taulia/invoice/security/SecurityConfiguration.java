@@ -22,7 +22,8 @@ class SecurityConfiguration {
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> {
-          auth.requestMatchers(HttpMethod.GET, "/invoice/**").permitAll()
+          auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+              .requestMatchers(HttpMethod.GET, "/invoice/**").permitAll()
               .requestMatchers(HttpMethod.POST, "/invoice").authenticated()
               .requestMatchers(HttpMethod.PATCH, "/invoice/**").authenticated()
               .requestMatchers(HttpMethod.DELETE, "/invoice/**").authenticated();
