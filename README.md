@@ -69,6 +69,7 @@ GET /invoices/{id}
 GET /invoices
 ```
 ### Partially update an existing invoice with the provided JSON payload:
+#### JSON Patch: https://www.baeldung.com/spring-rest-json-patch
 ```
 PATCH /invoices/{id}
 ```
