@@ -22,7 +22,7 @@ git clone https://github.com/CodeLikeAlexito/invoice-taulia.git
 Start the PostgreSQL database using Docker Compose:
 
 ```bash
-docker-compose up -d postgres
+docker-compose up
 ```
 ### Run the Application:
 Navigate to the root directory of the project and run the Spring Boot application:
@@ -30,6 +30,13 @@ Navigate to the root directory of the project and run the Spring Boot applicatio
 ```
 ./gradlew bootRun
 ```
+Or open the application in IntelliJ IDEA or different IDE and run it from there.
+
+## Security
+There is base spring security implemented. There is need for Basic Authorization only for POST, PATCH and DELETE endpoints. All GET endpoints are accessible from everyone. 
+#### Credentials
+- Username: alex
+- Password: 123
 
 ## REST Endpoints
 ### Create a New Invoice
@@ -74,5 +81,6 @@ PATCH /invoices/{id}
 ```
 DELETE /invoices/{id}
 ```
+This are just some of the main endpoints, you can check all of them in the swagger.
 ## Error Handling
 The microservice handles errors such as invalid input, non-existing invoices, etc., and returns appropriate error responses with status codes.
