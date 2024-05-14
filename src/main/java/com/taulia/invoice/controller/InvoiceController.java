@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/invoice")
 @RequiredArgsConstructor
 @Slf4j
-//TODO implement logging
 public class InvoiceController {
 
   private final InvoiceService invoiceService;
@@ -39,23 +38,27 @@ public class InvoiceController {
 
   @GetMapping
   public ResponseEntity<List<Invoice>> all() {
+    log.info("Invoice controller. Return all invoices");
     return ResponseEntity.ok(invoiceService.all());
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<Invoice> show(@PathVariable UUID id) {
+    log.info("Invoice controller. Return invoice with id: {}", id);
     return ResponseEntity.ok(invoiceService.show(id));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<String> delete(@PathVariable UUID id) {
     invoiceService.delete(id);
+    log.info("Invoice controller. Delete invoice with id: {}", id);
     return ResponseEntity.ok("Invoice with ID " + id + " deleted successfully.");
   }
 
   @PatchMapping("/{id}")
   public ResponseEntity<Invoice> update(@PathVariable("id") UUID invoiceId,
       @RequestBody(required = false) JsonNode patch) {
+    log.info("Invoice controller. Updated invoice with id: {}", invoiceId);
     return ResponseEntity.ok(this.invoiceService.update(invoiceId, patch));
   }
 
@@ -63,6 +66,7 @@ public class InvoiceController {
   public Page<Invoice> showInvoicesForBuyer(@PathVariable UUID buyerId,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "30") int size) {
+    log.info("Invoice controller. Return all invoices for buyer: {}", buyerId);
     return this.invoiceService.showInvoicesByBuyer(buyerId, page, size);
   }
 
@@ -70,6 +74,7 @@ public class InvoiceController {
   public Page<Invoice> showInvoicesForSupplier(@PathVariable UUID supplierId,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "30") int size) {
+    log.info("Invoice controller. Return all invoices for supplier: {}", supplierId);
     return this.invoiceService.showInvoicesForSupplier(supplierId, page, size);
   }
 }
