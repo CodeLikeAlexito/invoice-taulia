@@ -25,13 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 //TODO implement logging
-//TODO add @ApiOperation
 public class InvoiceController {
 
   private final InvoiceService invoiceService;
 
   @PostMapping
-//  @ApiOperation(value = "", authorizations = { @Authorization(value="jwtToken") })
   public ResponseEntity<Invoice> create(@RequestBody InvoiceRequestDto request){
     log.info("Invoice controller. Create new invoice endpoint.");
     log.info("Invoice dto: invoiceNumber: {}, buyerId: {}, supplierId: {}, dueDate: {}", request.getInvoiceNumber(),
