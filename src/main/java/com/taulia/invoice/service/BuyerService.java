@@ -14,7 +14,7 @@ public class BuyerService {
   private final BuyerRepository buyerRepository;
 
   public Buyer create(BuyerRequestDto request) {
-    return buyerRepository.save(Buyer.create(null, request.getName()));
+    return buyerRepository.save(Buyer.create(null, request.name()));
   }
 
   public List<Buyer> show() {

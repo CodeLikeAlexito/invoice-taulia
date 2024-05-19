@@ -36,16 +36,16 @@ public class InvoiceService {
   private final BuyerRepository buyerRepository;
   private final SupplierRepository supplierRepository;
   public Invoice create(@RequestBody InvoiceRequestDto request) {
-    Buyer buyer = buyerRepository.findById(UUID.fromString(request.getBuyerId()))
-        .orElseThrow(() -> new BuyerNotFoundException(request.getBuyerId()));
+    Buyer buyer = buyerRepository.findById(UUID.fromString(request.buyerId()))
+        .orElseThrow(() -> new BuyerNotFoundException(request.buyerId()));
 
-    Supplier supplier = supplierRepository.findById(UUID.fromString(request.getSupplierId()))
-        .orElseThrow(() -> new SupplierNotFoundException(request.getSupplierId()));
+    Supplier supplier = supplierRepository.findById(UUID.fromString(request.supplierId()))
+        .orElseThrow(() -> new SupplierNotFoundException(request.supplierId()));
 
     List<InvoiceItem> invoiceItems = createInvoiceItems(request);
 
-    Invoice invoice = Invoice.create(null, request.getInvoiceNumber(), buyer, supplier, invoiceItems,
-        LocalDate.now(), request.getDueDate());
+    Invoice invoice = Invoice.create(null, request.invoiceNumber(), buyer, supplier, invoiceItems,
+        LocalDate.now(), request.dueDate());
 
     for (InvoiceItem item : invoiceItems) {
       item.setInvoice(invoice);
@@ -57,13 +57,13 @@ public class InvoiceService {
   private static List<InvoiceItem> createInvoiceItems(InvoiceRequestDto request) {
     List<InvoiceItem> invoiceItems = new ArrayList<>();
 
-    if (!Objects.isNull(request.getItems())) {
-      for (InvoiceItemRequestDto itemDto : request.getItems()) {
+    if (!Objects.isNull(request.items())) {
+      for (InvoiceItemRequestDto itemDto : request.items()) {
         InvoiceItem invoiceItem = InvoiceItem.create(
             null,
-            itemDto.getDescription(),
-            itemDto.getQuantity(),
-            itemDto.getPrice()
+            itemDto.description(),
+            itemDto.quantity(),
+            itemDto.price()
         );
         invoiceItems.add(invoiceItem);
       }

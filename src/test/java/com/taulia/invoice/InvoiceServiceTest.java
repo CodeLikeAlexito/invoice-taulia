@@ -26,6 +26,7 @@ import com.taulia.invoice.persistence.repository.SupplierRepository;
 import com.taulia.invoice.service.InvoiceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -53,25 +54,15 @@ class InvoiceServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
   void testCreateInvoice() {
-    InvoiceRequestDto request = new InvoiceRequestDto();
-    request.setBuyerId(UUID.randomUUID().toString());
-    request.setSupplierId(UUID.randomUUID().toString());
-    request.setInvoiceNumber(123L);
-    request.setDueDate(LocalDate.now());
+    InvoiceRequestDto request = createInvoiceRequest();
 
-    Buyer buyer = Buyer.create(UUID.fromString(request.getBuyerId()), "BuyerName");
-    Supplier supplier = Supplier.create(UUID.fromString(request.getSupplierId()), "SupplierName");
-
-    List<InvoiceItemRequestDto> itemDtos = Arrays.asList(
-        new InvoiceItemRequestDto("Item 1", 2L, BigDecimal.TEN),
-        new InvoiceItemRequestDto("Item 2", 3L, BigDecimal.valueOf(15.0))
-    );
-    request.setItems(itemDtos);
+    Buyer buyer = Buyer.create(UUID.fromString(request.buyerId()), "BuyerName");
+    Supplier supplier = Supplier.create(UUID.fromString(request.supplierId()), "SupplierName");
 
     List<InvoiceItem> invoiceItems = Arrays.asList(
         InvoiceItem.create(null, "Item 1", 2L, BigDecimal.TEN),
@@ -87,19 +78,27 @@ class InvoiceServiceTest {
     Invoice result = invoiceService.create(request);
 
     assertNotNull(result);
-    assertEquals(request.getInvoiceNumber(), result.getInvoiceNumber());
+    assertEquals(request.invoiceNumber(), result.getInvoiceNumber());
     assertEquals(buyer, result.getBuyer());
     assertEquals(supplier, result.getSupplier());
     assertEquals(invoiceItems.size(), result.getItems().size());
   }
 
+  private static InvoiceRequestDto createInvoiceRequest() {
+    List<InvoiceItemRequestDto> itemDtos = Arrays.asList(
+        new InvoiceItemRequestDto("Item 1", 2L, BigDecimal.TEN),
+        new InvoiceItemRequestDto("Item 2", 3L, BigDecimal.valueOf(15.0))
+    );
+
+    InvoiceRequestDto request = new InvoiceRequestDto(123L, UUID.randomUUID().toString(),
+        UUID.randomUUID().toString(), LocalDate.now(), itemDtos);
+    return request;
+  }
+
   @Test
   public void testCreateInvoice_BuyerNotFoundException() {
-    InvoiceRequestDto request = new InvoiceRequestDto();
-    request.setBuyerId(UUID.randomUUID().toString());
-    request.setSupplierId(UUID.randomUUID().toString());
-    request.setInvoiceNumber(123L);
-    request.setDueDate(LocalDate.now());
+    InvoiceRequestDto request = new InvoiceRequestDto(123L, UUID.randomUUID().toString(),
+        UUID.randomUUID().toString(), LocalDate.now(), new ArrayList<>());
 
     when(buyerRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
@@ -110,11 +109,8 @@ class InvoiceServiceTest {
 
   @Test
   public void testCreateInvoice_SupplierNotFoundException() {
-    InvoiceRequestDto request = new InvoiceRequestDto();
-    request.setBuyerId(UUID.randomUUID().toString());
-    request.setSupplierId(UUID.randomUUID().toString());
-    request.setInvoiceNumber(123L);
-    request.setDueDate(LocalDate.now());
+    InvoiceRequestDto request = new InvoiceRequestDto(123L, UUID.randomUUID().toString(),
+        UUID.randomUUID().toString(), LocalDate.now(), new ArrayList<>());
 
     Buyer buyer = Buyer.create(UUID.randomUUID(), "Alex");
 
@@ -128,11 +124,8 @@ class InvoiceServiceTest {
 
   @Test
   public void testCreateInvoice_DataIntegrityViolationException() {
-    InvoiceRequestDto request = new InvoiceRequestDto();
-    request.setBuyerId(UUID.randomUUID().toString());
-    request.setSupplierId(UUID.randomUUID().toString());
-    request.setInvoiceNumber(123L);
-    request.setDueDate(LocalDate.now());
+    InvoiceRequestDto request = new InvoiceRequestDto(123L, UUID.randomUUID().toString(),
+        UUID.randomUUID().toString(), LocalDate.now(), new ArrayList<>());
 
     Buyer buyer = Buyer.create(UUID.randomUUID(), "Alex");
     Supplier supplier = Supplier.create(UUID.randomUUID(), "Tehnopolis");
@@ -168,20 +161,10 @@ class InvoiceServiceTest {
 
   @Test
   public void testUpdateInvoice_Success() throws JsonProcessingException {
-    InvoiceRequestDto request = new InvoiceRequestDto();
-    request.setBuyerId(UUID.randomUUID().toString());
-    request.setSupplierId(UUID.randomUUID().toString());
-    request.setInvoiceNumber(123L);
-    request.setDueDate(LocalDate.now());
+    InvoiceRequestDto request = createInvoiceRequest();
 
-    Buyer buyer = Buyer.create(UUID.fromString(request.getBuyerId()), "BuyerName");
-    Supplier supplier = Supplier.create(UUID.fromString(request.getSupplierId()), "SupplierName");
-
-    List<InvoiceItemRequestDto> itemDtos = Arrays.asList(
-        new InvoiceItemRequestDto("Item 1", 2L, BigDecimal.TEN),
-        new InvoiceItemRequestDto("Item 2", 3L, BigDecimal.valueOf(15.0))
-    );
-    request.setItems(itemDtos);
+    Buyer buyer = Buyer.create(UUID.fromString(request.buyerId()), "BuyerName");
+    Supplier supplier = Supplier.create(UUID.fromString(request.supplierId()), "SupplierName");
 
     List<InvoiceItem> invoiceItems = Arrays.asList(
         InvoiceItem.create(null, "Item 1", 2L, BigDecimal.TEN),

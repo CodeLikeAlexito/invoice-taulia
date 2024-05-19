@@ -12,6 +12,6 @@ public class SupplierService {
   private final SupplierRepository supplierRepository;
 
   public Supplier create(SupplierRequestDto request) {
-    return supplierRepository.save(Supplier.create(null, request.getName()));
+    return supplierRepository.save(Supplier.create(null, request.name()));
   }
 }

@@ -4,17 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Data;
 
-@Data
-public class InvoiceRequestDto {
-  @NotBlank
-  private Long invoiceNumber;
-  @NotNull
-  private String buyerId;
-  @NotNull
-  private String supplierId;
-  @NotNull
-  private LocalDate dueDate;
-  private List<InvoiceItemRequestDto> items;
+public record InvoiceRequestDto (
+  @NotBlank Long invoiceNumber,
+  @NotNull String buyerId,
+  @NotNull String supplierId,
+  @NotNull LocalDate dueDate,
+  List<InvoiceItemRequestDto> items
+) {
 }

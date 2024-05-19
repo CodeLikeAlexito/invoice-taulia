@@ -31,8 +31,8 @@ public class InvoiceController {
   @PostMapping
   public ResponseEntity<Invoice> create(@RequestBody InvoiceRequestDto request){
     log.info("Invoice controller. Create new invoice endpoint.");
-    log.info("Invoice dto: invoiceNumber: {}, buyerId: {}, supplierId: {}, dueDate: {}", request.getInvoiceNumber(),
-        request.getBuyerId(), request.getSupplierId(), request.getDueDate());
+    log.info("Invoice dto: invoiceNumber: {}, buyerId: {}, supplierId: {}, dueDate: {}", request.invoiceNumber(),
+        request.buyerId(), request.supplierId(), request.dueDate());
     return ResponseEntity.ok(invoiceService.create(request));
   }
 
