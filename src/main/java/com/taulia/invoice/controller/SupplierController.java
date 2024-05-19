@@ -3,8 +3,10 @@ package com.taulia.invoice.controller;
 import com.taulia.invoice.dto.request.SupplierRequestDto;
 import com.taulia.invoice.persistence.entity.Supplier;
 import com.taulia.invoice.service.SupplierService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,5 +21,10 @@ public class SupplierController {
   @PostMapping
   public ResponseEntity<Supplier> create(@RequestBody SupplierRequestDto request) {
     return ResponseEntity.ok(supplierService.create(request));
+  }
+
+  @GetMapping
+  public ResponseEntity<List<Supplier>> all() {
+    return ResponseEntity.ok(this.supplierService.show());
   }
 }

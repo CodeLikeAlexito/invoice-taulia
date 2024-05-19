@@ -24,7 +24,11 @@ class SecurityConfiguration {
         .authorizeHttpRequests(auth -> {
           auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
               .requestMatchers(HttpMethod.GET, "/invoice/**").permitAll()
+              .requestMatchers(HttpMethod.GET, "/buyer/**").permitAll()
+              .requestMatchers(HttpMethod.GET, "/supplier/**").permitAll()
               .requestMatchers(HttpMethod.POST, "/invoice").authenticated()
+              .requestMatchers(HttpMethod.POST, "/buyer").authenticated()
+              .requestMatchers(HttpMethod.POST, "/supplier").authenticated()
               .requestMatchers(HttpMethod.PATCH, "/invoice/**").authenticated()
               .requestMatchers(HttpMethod.DELETE, "/invoice/**").authenticated();
         })
