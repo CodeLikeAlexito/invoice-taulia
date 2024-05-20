@@ -23,6 +23,7 @@ class SecurityConfiguration {
     return http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> {
           auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+              .requestMatchers("/error").permitAll()
               .requestMatchers(HttpMethod.GET, "/invoice/**").permitAll()
               .requestMatchers(HttpMethod.GET, "/buyer/**").permitAll()
               .requestMatchers(HttpMethod.GET, "/supplier/**").permitAll()

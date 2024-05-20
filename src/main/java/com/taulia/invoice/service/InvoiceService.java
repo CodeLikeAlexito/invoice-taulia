@@ -102,7 +102,6 @@ public class InvoiceService {
     return request.items().stream()
         .map(itemDto -> InvoiceItem.create(
             null,
-            itemDto.description(),
             itemDto.quantity(),
             itemDto.price()
         ))

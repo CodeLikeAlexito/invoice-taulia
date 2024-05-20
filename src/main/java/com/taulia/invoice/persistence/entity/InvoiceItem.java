@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -27,8 +28,11 @@ public final class InvoiceItem {
   @GeneratedValue
   private final UUID id;
 
-  @Column(name = "name", length = 255)
-  private final String name;
+  @OneToOne
+  @JoinColumn(name = "invoice_item_nom_id", nullable = false)
+  @JsonIgnore
+  private InvoiceItemNom nameId;
+
   private final Long quantity;
   private final BigDecimal amount;
 
@@ -39,22 +43,20 @@ public final class InvoiceItem {
   @Setter
   private Invoice invoice;
 
-  private InvoiceItem(UUID id, String name, Long quantity, BigDecimal amount) {
+  private InvoiceItem(UUID id, Long quantity, BigDecimal amount) {
     this.id = id;
-    this.name = name;
     this.quantity = quantity;
     this.amount = amount;
   }
 
-  private InvoiceItem(UUID id, String name, Long quantity, BigDecimal amount, Invoice invoice) {
+  private InvoiceItem(UUID id, Long quantity, BigDecimal amount, Invoice invoice) {
     this.id = id;
-    this.name = name;
     this.quantity = quantity;
     this.amount = amount;
     this.invoice = invoice;
   }
 
-  public static InvoiceItem create(UUID id, String name, Long quantity, BigDecimal amount) {
-    return new InvoiceItem(id, name, quantity, amount);
+  public static InvoiceItem create(UUID id, Long quantity, BigDecimal amount) {
+    return new InvoiceItem(id, quantity, amount);
   }
 }
